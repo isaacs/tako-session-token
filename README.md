@@ -1,4 +1,4 @@
-# tako-session-tokens
+# tako-session-token
 
 Just a session token middleware for Tako.  Works great with
 `tako-cookies`.
@@ -8,7 +8,7 @@ Just a session token middleware for Tako.  Works great with
 ```javascript
 // various tako stuff...
 
-var SessionToken = require("tako-session-tokens")
+var SessionToken = require("tako-session-token")
 app.middle(new SessionToken("my-happy-app"))
 
 // later...
