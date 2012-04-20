@@ -6,10 +6,13 @@ Just a session token middleware for Tako.  Works great with
 ## Usage
 
 ```javascript
-// various tako stuff...
+var sessionToken = require("tako-session-token")
 
-var SessionToken = require("tako-session-token")
-app.middle(new SessionToken("my-happy-app"))
+// use the default token of "tako-session"...
+app.on("request", sessionToken)
+
+// or define one of your own
+app.on("request", sessionToken("myapp-session"))
 
 // later...
 app.route("/foo", function (req, res) {

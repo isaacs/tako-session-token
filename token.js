@@ -1,24 +1,31 @@
 var tako = require("tako")
 , crypto = require("crypto")
-, EE = require("events").EventEmitter
 
 // the default middleware, so it just works.
-module.exports = SessionToken
+module.exports = sessionToken
 
-// make the class act as one itself.
-SessionToken.call(SessionToken, "tako-session")
+var handlers = {}
+, defaultKey = "tako-session"
 
-function SessionToken (tok) {
-  if (!tok) throw new Error("tako-session needs a token")
-  if (!(this instanceof SessionToken) && this !== SessionToken) {
-    return new SessionToken(tok)
+// call once to set up the default
+sessionToken()
+
+function sessionToken (req, res) {
+  var tok = defaultKey
+  if (typeof req === "object" && typeof res === "object") {
+    return handler(tok)(req, res)
+  } else {
+    if (typeof req === "string" || Buffer.isBuffer(req)) {
+      tok = String(req)
+    }
+    if (!tok) throw new Error("tako-session needs a token")
+    return handler(tok)
   }
+}
 
-  var myEE = new EE()
-  this.on = myEE.on.bind(myEE)
-  this.emit = myEE.emit.bind(myEE)
-
-  myEE.on("request", function (req, res) {
+function handler (tok) {
+  handlers[tok] = handlers[tok] || function handle (req, res) {
+    if (!tok) throw new Error("tako-session needs a token")
     if (!req.cookies) {
       throw new Error("session token requires cookies")
     }
@@ -28,5 +35,6 @@ function SessionToken (tok) {
       req.cookies.set(tok, key, {signed: true})
     }
     req.session = res.session = key
-  })
+  }
+  return handlers[tok]
 }
