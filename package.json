@@ -1,0 +1,18 @@
+{
+  "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+  "name": "tako-session-token",
+  "description": "session tokens for tako",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/isaacs/tako-session-token.git"
+  },
+  "main": "token.js",
+  "peerDependencies": {
+    "tako": "~0.2.5",
+    "tako-cookies": "*"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
